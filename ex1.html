@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form id="addForm">
+        <label for="fullName">Фамилия, Имя, Отчество:</label>
+        <input type="text" id="fullName">
+        <br>
+        <label for='position'>Должность:</label>
+        <select id="position" >
+            <option value="Директор">Директор</option>
+            <option value="Зам директора">Зам директора</option>
+            <option value="Преподаватель">Преподаватель</option>
+            <option value="Студент">Студент</option>
+        </select>
+        <br>
+        <label>Пол:</label>
+        <input type="radio" name="gender" value="Мужской" checked > Мужской
+        <input type="radio" name="gender" value="Женский" > Женский
+        <br>
+        <label>Дата рождения:</label>
+        <input type="date" id="dob" value="2023-02-27" >
+        <br>
+        <label>Возраст:</label>
+        <input type="number" id="age">
+        <br>
+        <label> Доход за мясяц:</label>
+        <input type="number" id="income">
+        <br>
+    </form>
+        <button id="myButton">Сохранить</button>
+    <table id="myTable">
+  <thead>
+    <tr>
+      <th>№</th> 
+      <th>Фамилия, Имя, Отчество </th>
+      <th> Должность </th>
+      <th> Пол </th>
+      <th> Дата рождения </th>
+      <th> Возраст </th>
+      <th> Доход за мясяц </th>
+      <th> Чистый доход </th>
+      <th> Средний доход в месяц </th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+    <script >
+        const myButton = document.getElementById("myButton");
+            var number = 0
+            const fullName = document.getElementById("fullName");
+            const position = document.getElementById("position");
+            const gender = document.querySelector('input[name="gender"]:checked');
+            const dob = document.getElementById("dob");
+            const age = document.getElementById("age");
+            const income = document.getElementById("income");
+
+            myButton.addEventListener("click", function () {
+                number++;
+
+                let myObject = {
+                    name: fullName,
+                    position: position,
+                    gender: gender,
+                    dob: dob,
+                    age: age,
+                    incomes: income,
+                };
+                createTable(myObject, "myTable", number)
+
+                fieldDevastation(myObject)
+            });
+
+            function fieldDevastation(object) {
+                for (const key in object) {
+                    if (key !== 'dob' && key !== 'gender' && key !== 'position') {
+                        object[key].value = '';
+                    }
+                }
+            }
+
+            function createTable(object, idTable, number) {
+                const tableBody = document.getElementById(idTable);
+                const tr = document.createElement("tr");
+
+                tr.innerHTML += `<td>${number}</td>`
+
+                for (const key in object) {
+                    tr.innerHTML += `<td>${object[key].value}</td>`
+                }
+                let net = object.incomes.value - ((object.incomes.value / 100) * 15) - ((object.incomes.value / 100) * 10)
+                let eaverageIncome = net / 12
+                tr.innerHTML += `<td>${net}</td>`
+                tr.innerHTML += `<td>${eaverageIncome}</td>`
+
+                tableBody.appendChild(tr);
+            }
+
+    </script>
+
+</body>
+
+</html>

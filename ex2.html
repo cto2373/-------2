@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Журнал</title>
+</head>
+
+<body><div style="display: inline-block;">
+        <label for="fullName">Полное имя</label>
+        <input type="text" id="fullName" required>
+
+        <label for="class">Группа</label>
+        <input type="text" id="class">
+
+        <label for="subject">Предмет</label>
+        <input type="text" id="subject"><br>
+
+        <label for="first">Оценка за 1 четверь (Ввод цифр от 1 до5)</label>
+        <input type="number" min="1" max="5" id="first"><br>
+
+        <label for="second">Оценка за 2 четверь (Ввод цифр от 1 до5)</label>
+        <input type="number" min="1" max="5" id="second"><br>
+
+        <label for="third">Оценка за 3 четверь (Ввод цифр от 1 до5)</label>
+        <input type="number" min="1" max="5" id="third"><br>
+
+        <label for="fourth">Оценка за 4 четверь (Ввод цифр от 1 до5)</label>
+        <input type="number" min="1" max="5" id="fourth"><br>
+
+        <label for="yearly">Оценка за год (Все четверти/4)</label>
+        <input type="number" min="1" max="5" id="yearly"><br>
+        <button class="button">save</button>
+    </div>
+    <span style="display: inline-block;">
+        <p>отличники: <span id="exl"></span></p>
+        <p>хорошисты:<span id="good"></span></p>
+        <p>троишники: <span id="flunk"></span></p>
+    </span>
+    <p id="listImproved">улудшил: </p>
+    <p id="listWorsened">ухудшил: </p>
+
+
+    
+
+
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Фамилия, Имя </th>
+                <th> 1 Четверть </th>
+                <th> 2 Четверть </th>
+                <th> 3 Четверть </th>
+                <th> 4 Четверть </th>
+                <th> Год </th>
+
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+
+
+    <script>
+        const fullName = document.getElementById("fullName");
+        const first = document.getElementById("first");
+        const second = document.getElementById("second");
+        const third = document.getElementById("third");
+        const fourth = document.getElementById("fourth");
+        const yearly = document.getElementById("yearly");
+        const exl = document.getElementById("exl");
+        const good = document.getElementById("good");
+        const flunk = document.getElementById("flunk");
+        const Improved = document.getElementById("listImproved");
+        const Worsened = document.getElementById("listWorsened");
+        const button = document.querySelector(".button");
+
+        let students = [];
+
+        let number = 1;
+
+        let excellent = 0;
+        let straight = 0;
+        let flunkey = 0;
+
+
+        button.addEventListener('click', function () {
+
+            students.push({
+                name: fullName,
+                first: first,
+                second: second,
+                third: third,
+                fourth: fourth,
+                yearly: yearly
+            });
+
+            ListExcellent(students[number - 1]);
+            exl.innerHTML = excellent
+            good.innerHTML = straight
+            flunk.innerHTML = flunkey
+            listResult(students[number-1])
+            createTable(students[number - 1], "myTable", number);
+
+
+            number++;
+        });
+
+        function createTable(object, idTable, number) {
+            const tableBody = document.getElementById(idTable);
+            const tr = document.createElement("tr");
+
+            tr.innerHTML += `<td>${number}</td>`;
+
+            for (const key in object) {
+                tr.innerHTML += `<td>${object[key].value}</td>`;
+                object[key].value = '';
+            }
+
+            tableBody.appendChild(tr);
+        }
+
+        function ListExcellent(student) {
+            if (student['yearly'].value === '5') {
+                excellent++;
+            } else if (student.yearly.value === '4') {
+                straight++;
+            } else if (student['yearly'].value === '3') {
+                flunkey++;
+            }
+
+
+        }
+        function listResult(student) {
+            let firstNum = Number(student['first'].value)
+            let secondNum = Number(student['second'].value)
+            let thirdNum = Number(student['third'].value)
+            let fourthNum = Number(student['fourth'].value)
+
+            let res = Math.round((secondNum+thirdNum+fourthNum)/3)
+
+            if (res > firstNum){
+                Improved.innerHTML+=student.name.value
+            }else{
+                Worsened.innerHTML+=student.name.value
+            }
+            console.log(listImproved +'++++');
+            console.log(listWorsened +'----');
+        }
+
+    </script>
+</body>
+
+</html>

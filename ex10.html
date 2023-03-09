@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="create">Создать массив</button>
+    <p id="grid"></p>
+    <h2>Короткий путь : <span id="result"></span></h2>
+
+
+
+
+    <script>
+        const button = document.getElementById('create');
+        const grid = document.getElementById('grid');
+        const result = document.getElementById('result');
+
+        let position = 0;
+        function shortcut(grid) {
+            path = [];
+            grid.forEach((string, index) => {
+                if (index === 0) {
+                    let minValue = Math.min(...string)
+                    path.push(minValue);
+                    position = string.indexOf(minValue);
+
+                } else {
+                    if (position > 0 && position < string.length - 1) {
+
+                        position = borders(3, position, string)
+                        path.push(string[position])
+
+                    } else if (position == 0) {
+                        let subString = string.slice(0, (position + 1) + 1);
+                        sideborder(1, subString, string);
+                    } else if (position == string.length - 1) {
+                        let subString = string.slice(position - 1, position + 1);
+                        sideborder(-1, subString, string);
+                    }
+                }
+            });
+            return(path);
+        }
+
+        function sideborder(indexBorder, subString, string) {
+            path.push(Math.min(...subString));
+
+            switch (Math.min(...subString)) {
+                case string[position]:
+                    position = position;
+                    break;
+                case string[position + indexBorder]:
+                    position = position + indexBorder;
+                default:
+            }
+        }
+
+
+        function borders(range, position, string) {
+            if (range % 2 !== 0) {
+                var border = Math.floor(range / 2);
+            }
+            let minPosition = position - border;
+            let maxPosition = position + border;
+
+            let subString = string.slice(minPosition, maxPosition + 1);
+
+            let minValue = Math.min(...subString);
+
+            for (let i = minPosition; i <= maxPosition; i++) {
+                if (string[i] === minValue) {
+                    return i
+                }
+            }
+
+        }
+        // console.log(path);
+        function randomGrid(min, max) {
+            return Array.from({ length: 20 },
+                () => Array.from({ length: 10 }, () =>
+                    Math.floor(Math.random() * (max - min+1) + min),))
+        }
+
+        button.addEventListener("click", () => {
+            grid.innerHTML = '';
+            let a = randomGrid(1, 2)
+            for (const iter of a) {
+                grid.innerHTML += `<p>${iter}</p>`
+            }
+            result.innerHTML= shortcut(a)
+        })
+
+        // const a = randomGrid(0, 10)
+        console.log(a);
+
+        // shortcut(a)
+
+    </script>
+</body>
+
+</html>
