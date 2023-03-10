@@ -1,20 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    <label for="text"></label>
-    <input type="text" id="text">
+    <style>
+      .input-wrapper {
+        position: relative;
+      }
+
+      #crypt {
+        width: 100%;
+        height: 50px;
+        resize: none;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        line-height: 1.5;
+        transition: height 0.3s;
+      }
+
+      #crypt:focus {
+        outline: none;
+        border-color: #333;
+        box-shadow: 0 0 5px #ccc;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <label for="encrypt"><input type="text" id="encrypt" /></label> -->
+    <!-- <label for="crypt"><input type="text" id="crypt" /></label> -->
+    <div class="input-wrapper">
+      <textarea id="encrypt" placeholder="Шифрование" class="field"></textarea>
+      <textarea id="crypt" placeholder="Расшифровка" class="field"></textarea>
+    </div>
+
     <script>
-        let word = "JavaScript";
-            for (let i = 0; i < word.length; i++) {
-                let code = word.charCodeAt(i);
-                console.log(code);
-            }
+      const encrypt = document.getElementById("encrypt");
+      const crypt = document.getElementById("crypt");
+      encrypt.addEventListener("input", (e) => {
+        crypt.value= encryptValue(e);
+        encrypt.style.height = "auto";
+        encrypt.style.height = `${encrypt.scrollHeight}px`;
+
+        crypt.style.height = "auto";
+        crypt.style.height = `${crypt.scrollHeight}px`;
+      });
+      crypt.addEventListener("input", (e) => {
+        cryptValue(e);
+        crypt.style.height = "auto";
+        crypt.style.height = `${crypt.scrollHeight}px`;
+
+        encrypt.style.height = "auto";
+        encrypt.style.height = `${encrypt.scrollHeight}px`;
+      });
+
+      function display(field, value) {
+        field.value = (value);
+      }
+
+      function cryptValue(e) {
+        const asciiCodes = e.target.value.split(",");
+        console.log(asciiCodes);
+        const word = String.fromCharCode(...asciiCodes);
+        console.log(word); // "Hello"
+        encrypt.value = word;
+      }
+
+      function encryptValue(e) {
+        let word = [];
+
+        for (let i = 0; i < e.target.value.length; i++) {
+          let code = e.target.value.charCodeAt(i);
+          word.push(code);
+        //   console.log(word);
+        }
+        // console.log(word);
+        return word;
+      }
     </script>
-</body>
+  </body>
 </html>
